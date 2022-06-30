@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% if title %}
+<title>{{title}}</title>
+{% else %}
+<title>可轉債分析系統</title>
+{% endif %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="/static/css/style.css">
+</head>
+<body>
+<div class="container1" id="all">
+    <div id="header">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
+            <a class="navbar-brand" href="#" style="font-size: 25px;">可轉債分析系統</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup" >
+                <div class="nav navbar-default">
+                    <a class="nav-item nav-link active" style="margin: 0px 0px 0px 20px; font-size: 20px" href="{{ url_for('login') }}">登入 <span class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" style="margin: 0px 0px 0px 20px; font-size: 20px" href="{{ url_for('qryTable') }}">可轉債列表</a>
+                    <a class="nav-item nav-link" style="margin: 0px 0px 0px 20px; font-size: 20px" href="{{ url_for('lowCP') }}">低轉換溢價清單</a>
+                    <a class="nav-item nav-link" style="margin: 0px 0px 0px 20px; font-size: 20px" href="{{ url_for('low_risk') }}">低風險名單</a>
+                    <a class="nav-item nav-link" style="margin: 0px 0px 0px 20px; font-size: 20px" href="{{ url_for('chase') }}">以債追股</a>
+                    <a class="nav-item nav-link" style="margin: 0px 0px 0px 20px; font-size: 20px" href="{{ url_for('importData') }}">更新資料</a>
+                    <a class="nav-item nav-link" style="margin: 0px 0px 0px 20px; font-size: 20px" href="{{ url_for('wishlist') }}">自選清單</a>
+                    <form action="/qryName" method="post">
+                        <input placeholder="搜尋可轉債 代號／名稱" type="text" id="codename" name="codename" class="cet"  required="required">
+                        <button type="submit" class="btn btn-primary btn-block" style="margin: -37px 0px 13px 620px; width:80px">搜尋</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="container2">
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning" style="margin: 0px 0px 0px 0px;">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+        <!-- <script>alert('{{ message }}')</script> -->
+        {% endfor %}
+
+        {% if recs %}
+
+        <table class="table table-striped" id="set">
+            <thead>
+                <th>代碼</th>
+                <th>可轉債名稱</th>
+                <th>轉換標的名稱</th>
+                <th>上市櫃別</th>
+                <th>擔保銀行</th>
+                <th>最新CB收盤價</th>
+                <th>轉換價值</th>
+                <th>CBAS權利金</th>
+                <th>轉換溢價率</th>
+                <th>最新股票收盤價</th>
+                <th>目前轉換價</th>
+                <th>發行時轉換價</th>
+                <th>發行價格</th>
+                <th>發行總額</th>
+                <th>最新餘額</th>
+                <th>轉換比例</th>
+                <th>發行日</th>
+                <th>到期日</th>
+                <th>到期賣回價格</th>
+                <th>下次提前賣回日</th>
+                <th>下次提前賣回價格</th>
+            </thead>
+            <tbody>
+            {% for rec in recs %}
+            <tr>
+                <td>{{ rec[23]}}</td>
+                <td>{{ rec[1]}}</td>
+                <td>{{ rec[2]}}</td>
+                <td>{{ rec[3]}}</td>
+                <td>{{ rec[4]}}</td>
+                <td>{{ rec[5]}}</td>
+                <td>{{ rec[6]}}</td>
+                <td>{{ rec[7]}}</td>
+                <td>{{ rec[8]}}</td>
+                <td>{{ rec[9]}}</td>
+                <td>{{ rec[10]}}</td>
+                <td>{{ rec[11]}}</td>
+                <td>{{ rec[12]}}</td>
+                <td>{{ rec[13]}}</td>
+                <td>{{ rec[14]}}</td>
+                <td>{{ rec[15]}}</td>
+                <td>{{ rec[16]}}</td>
+                <td>{{ rec[17]}}</td>
+                <td>{{ rec[18]}}</td>
+                <td>{{ rec[19]}}</td>
+                <td>{{ rec[20]}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html>
